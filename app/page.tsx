@@ -1,66 +1,125 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
 
-export default function Home() {
+import { Container, Stack, Group, Title, Button, Card, Text, Grid, Box, Center } from '@mantine/core';
+import { Ship, Award, BookOpen, Users } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
+export default function LandingPage() {
+  const router = useRouter();
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <Box style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+      <Container size="xl" py="xl">
+        <Stack gap="xl">
+          <Group justify="space-between" py="md">
+            <Group>
+              <Ship size={40} color="white" />
+              <Title order={2} c="white">Личный кабинет моряка</Title>
+            </Group>
+            <Group>
+              <Button variant="white" onClick={() => router.push('/login')}>
+                Вход
+              </Button>
+              <Button
+                variant="outline"
+                c="white"
+                style={{ borderColor: 'white' }}
+                onClick={() => router.push('/register')}
+              >
+                Регистрация
+              </Button>
+            </Group>
+          </Group>
+
+          <Center py={80}>
+            <Stack gap="xl" align="center" maw={800}>
+              <Title order={1} c="white" ta="center" size={48}>
+                Единая платформа управления документами и обучением моряков
+              </Title>
+              <Text size="xl" c="white" ta="center">
+                Контролируйте сроки действия дипломов и сертификатов, записывайтесь на курсы, управляйте обучением персонала
+              </Text>
+              <Group>
+                <Button size="lg" variant="white" onClick={() => router.push('/register')}>
+                  Начать работу
+                </Button>
+                <Button size="lg" variant="outline" c="white" style={{ borderColor: 'white' }}>
+                  Подробнее
+                </Button>
+              </Group>
+            </Stack>
+          </Center>
+
+          <Grid py={40}>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <Card shadow="lg" padding="xl" radius="md">
+                <Stack align="center" gap="md">
+                  <Award size={48} color="#667eea" />
+                  <Title order={3} ta="center">Управление документами</Title>
+                  <Text size="sm" c="dimmed" ta="center">
+                    Отслеживайте сроки действия всех дипломов и сертификатов. Получайте уведомления о необходимости продления.
+                  </Text>
+                </Stack>
+              </Card>
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <Card shadow="lg" padding="xl" radius="md">
+                <Stack align="center" gap="md">
+                  <BookOpen size={48} color="#667eea" />
+                  <Title order={3} ta="center">Обучение</Title>
+                  <Text size="sm" c="dimmed" ta="center">
+                    Записывайтесь на курсы от ведущих морских учебных заведений. Интеграция с системой дистанционного обучения.
+                  </Text>
+                </Stack>
+              </Card>
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <Card shadow="lg" padding="xl" radius="md">
+                <Stack align="center" gap="md">
+                  <Users size={48} color="#667eea" />
+                  <Title order={3} ta="center">HR-управление</Title>
+                  <Text size="sm" c="dimmed" ta="center">
+                    Планируйте обучение сотрудников, контролируйте сроки документов, формируйте отчеты.
+                  </Text>
+                </Stack>
+              </Card>
+            </Grid.Col>
+          </Grid>
+
+          <Card shadow="lg" padding="xl" radius="md">
+            <Grid>
+              <Grid.Col span={{ base: 6, md: 3 }}>
+                <Stack align="center" gap="xs">
+                  <Text size="xl" fw={700} c="blue">5000+</Text>
+                  <Text size="sm" c="dimmed" ta="center">Пользователей</Text>
+                </Stack>
+              </Grid.Col>
+              <Grid.Col span={{ base: 6, md: 3 }}>
+                <Stack align="center" gap="xs">
+                  <Text size="xl" fw={700} c="blue">15</Text>
+                  <Text size="sm" c="dimmed" ta="center">Учебных заведений</Text>
+                </Stack>
+              </Grid.Col>
+              <Grid.Col span={{ base: 6, md: 3 }}>
+                <Stack align="center" gap="xs">
+                  <Text size="xl" fw={700} c="blue">200+</Text>
+                  <Text size="sm" c="dimmed" ta="center">Курсов</Text>
+                </Stack>
+              </Grid.Col>
+              <Grid.Col span={{ base: 6, md: 3 }}>
+                <Stack align="center" gap="xs">
+                  <Text size="xl" fw={700} c="blue">98%</Text>
+                  <Text size="sm" c="dimmed" ta="center">Удовлетворенность</Text>
+                </Stack>
+              </Grid.Col>
+            </Grid>
+          </Card>
+
+          <Group justify="center" py="xl">
+            <Text c="white" size="sm">© 2025 Личный кабинет моряка. Все права защищены.</Text>
+          </Group>
+        </Stack>
+      </Container>
+    </Box>
   );
 }
