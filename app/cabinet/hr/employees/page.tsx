@@ -1,7 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { Stack, Title, Group, Button, TextInput, Table, Text, Badge, ActionIcon, Modal, Divider, Grid, Card } from '@mantine/core';
+import {
+  Stack,
+  Title,
+  Group,
+  Button,
+  TextInput,
+  Table,
+  Text,
+  Badge,
+  ActionIcon,
+  Modal,
+  Divider,
+  Grid,
+  Card,
+  Box
+} from '@mantine/core';
 import { Download, Search, Eye } from 'lucide-react';
 import { mockEmployees } from '@/lib/mockData';
 import { Employee } from '@/types';
@@ -41,7 +56,7 @@ export default function EmployeesPage() {
         </Group>
       </Group>
 
-      <Table highlightOnHover>
+      <Box style={{ overflowX: 'auto' }}><Table highlightOnHover>
         <Table.Thead>
           <Table.Tr>
             <Table.Th>ФИО</Table.Th>
@@ -97,14 +112,14 @@ export default function EmployeesPage() {
                     variant="light"
                     onClick={() => openEmployeeDetail(emp)}
                   >
-                    <Eye size={16} />
+                    <Eye size={16}/>
                   </ActionIcon>
                 </Table.Td>
               </Table.Tr>
             );
           })}
         </Table.Tbody>
-      </Table>
+      </Table></Box>
 
       <Modal
         opened={modalOpened}

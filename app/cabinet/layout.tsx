@@ -2,7 +2,8 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { AppShell, Container, Group, Title, Text, Menu, UnstyledButton, Avatar } from '@mantine/core';
+import { AppShell, Container, Group, Title, Text, Menu, UnstyledButton, Avatar, Box, Burger } from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Ship, User, Bell, LogOut, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
@@ -13,6 +14,7 @@ export default function CabinetLayout({
 }) {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     if (!loading && !user) {
@@ -26,8 +28,8 @@ export default function CabinetLayout({
 
   return (
     <AppShell
-      header={{ height: 70 }}
-      padding="md"
+      header={{ height: isMobile ? 60 : 70 }}
+      padding={isMobile ? 'xs' : 'md'}
       styles={(theme) => ({
         main: { backgroundColor: theme.colors.gray[0] }
       })}
@@ -35,33 +37,40 @@ export default function CabinetLayout({
       <AppShell.Header>
         <Container size="xl" h="100%">
           <Group justify="space-between" h="100%">
-            <Group>
-              <Ship size={32} color="#1971c2" />
-              <div>
-                <Title order={3}>Личный кабинет моряка</Title>
-                <Text size="xs" c="dimmed">
-                  {user.role === 'hr' ? 'Режим: Служба управления персоналом' : 'Режим: Моряк'}
-                </Text>
-              </div>
+            <Group gap={isMobile ? 'xs' : 'md'}>
+              <Ship size={isMobile ? 24 : 32} color="#1971c2" />
+              {!isMobile && (
+                <div>
+                  <Title order={3}>Личный кабинет моряка</Title>
+                  <Text size="xs" c="dimmed">
+                    {user.role === 'hr' ? 'Режим: Служба управления персоналом' : 'Режим: Моряк'}
+                  </Text>
+                </div>
+              )}
             </Group>
             <Menu shadow="md" width={200}>
               <Menu.Target>
                 <UnstyledButton>
                   <Group gap="xs">
-                    <Avatar color="blue" radius="xl">
+                    <Avatar color="blue" radius="xl" size={isMobile ? 'sm' : 'md'}>
                       {user.name.split(' ').map(n => n[0]).join('')}
                     </Avatar>
-                    <div style={{ flex: 1 }}>
-                      <Text size="sm" fw={500}>{user.name}</Text>
-                      <Text size="xs" c="dimmed">
-                        {user.role === 'hr' ? 'HR-специалист' : 'Моряк'}
-                      </Text>
-                    </div>
-                    <ChevronDown size={16} />
+                    {!isMobile && (
+                      <>
+                        <div style={{ flex: 1 }}>
+                          <Text size="sm" fw={500}>{user.name}</Text>
+                          <Text size="xs" c="dimmed">
+                            {user.role === 'hr' ? 'HR-специалист' : 'Моряк'}
+                          </Text>
+                        </div>
+                        <ChevronDown size={16} />
+                      </>
+                    )}
                   </Group>
                 </UnstyledButton>
               </Menu.Target>
               <Menu.Dropdown>
+                <Menu.Label>{user.name}</Menu.Label>
                 <Menu.Item leftSection={<User size={14} />}>
                   Профиль
                 </Menu.Item>

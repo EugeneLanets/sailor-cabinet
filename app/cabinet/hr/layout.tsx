@@ -1,8 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { Tabs } from '@mantine/core';
+import { Tabs, Drawer, NavLink, Group, Burger, Box, Stack } from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { TrendingUp, Users, Calendar, FileText } from 'lucide-react';
+
+const menuItems = [
+  { value: 'dashboard', label: 'Панель управления', icon: TrendingUp, path: '/cabinet/hr' },
+  { value: 'employees', label: 'Сотрудники', icon: Users, path: '/cabinet/hr/employees' },
+  { value: 'planning', label: 'Планирование', icon: Calendar, path: '/cabinet/hr/planning' },
+  { value: 'reports', label: 'Отчеты', icon: FileText, path: '/cabinet/hr/reports' },
+];
 
 export default function HRLayout({
                                    children,
@@ -11,39 +20,79 @@ export default function HRLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [opened, { toggle, close }] = useDisclosure(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
-  // Определяем активную вкладку из URL
   const getActiveTab = () => {
-    if (pathname === '/cabinet/hr') return 'dashboard';
-    if (pathname.includes('/employees')) return 'employees';
-    if (pathname.includes('/planning')) return 'planning';
-    if (pathname.includes('/reports')) return 'reports';
-    return 'dashboard';
+    const item = menuItems.find(item => item.path === pathname);
+    return item?.value || 'dashboard';
   };
 
-  const handleTabChange = (value: string | null) => {
-    if (value === 'dashboard') {
-      router.push('/cabinet/hr');
-    } else {
-      router.push(`/cabinet/hr/${value}`);
-    }
+  const handleNavigation = (path: string) => {
+    router.push(path);
+    close();
   };
+
+  if (isMobile) {
+    return (
+      <>
+        <Box mb="md">
+          <Group justify="space-between">
+            <Burger opened={opened} onClick={toggle} size="sm" />
+            <Box fw={500}>
+              {menuItems.find(item => item.path === pathname)?.label || 'Панель управления'}
+            </Box>
+            <Box w={30} />
+          </Group>
+        </Box>
+
+        <Drawer
+          opened={opened}
+          onClose={close}
+          title="Навигация HR"
+          padding="md"
+          size="xs"
+        >
+          <Stack gap="xs">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <NavLink
+                  key={item.value}
+                  label={item.label}
+                  leftSection={<Icon size={20} />}
+                  active={pathname === item.path}
+                  onClick={() => handleNavigation(item.path)}
+                  style={{ borderRadius: '8px' }}
+                />
+              );
+            })}
+          </Stack>
+        </Drawer>
+
+        <Box>{children}</Box>
+      </>
+    );
+  }
 
   return (
-    <Tabs value={getActiveTab()} onChange={handleTabChange}>
+    <Tabs value={getActiveTab()} onChange={(value) => {
+      const item = menuItems.find(i => i.value === value);
+      if (item) router.push(item.path);
+    }}>
       <Tabs.List>
-        <Tabs.Tab value="dashboard" leftSection={<TrendingUp size={16} />}>
-          Панель управления
-        </Tabs.Tab>
-        <Tabs.Tab value="employees" leftSection={<Users size={16} />}>
-          Сотрудники
-        </Tabs.Tab>
-        <Tabs.Tab value="planning" leftSection={<Calendar size={16} />}>
-          Планирование
-        </Tabs.Tab>
-        <Tabs.Tab value="reports" leftSection={<FileText size={16} />}>
-          Отчеты
-        </Tabs.Tab>
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <Tabs.Tab
+              key={item.value}
+              value={item.value}
+              leftSection={<Icon size={16} />}
+            >
+              {item.label}
+            </Tabs.Tab>
+          );
+        })}
       </Tabs.List>
 
       <Tabs.Panel value={getActiveTab()} pt="xl">

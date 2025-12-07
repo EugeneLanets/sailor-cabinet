@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Stack, Title, Group, Button, Alert, Grid, Card, Text, Select, Table, Badge, Paper } from '@mantine/core';
+import {Stack, Title, Group, Button, Alert, Grid, Card, Text, Select, Table, Badge, Paper, Box} from '@mantine/core';
 import { Download, TrendingUp, AlertCircle, Users, Filter } from 'lucide-react';
 import { mockEmployees } from '@/lib/mockData';
 import { getStatusColor } from '@/lib/utils';
@@ -115,7 +115,7 @@ export default function HRDashboard() {
           />
         </Group>
 
-        <Table highlightOnHover>
+        <Box style={{overflowX: 'auto'}}><Table highlightOnHover>
           <Table.Thead>
             <Table.Tr>
               <Table.Th>Сотрудник</Table.Th>
@@ -154,7 +154,7 @@ export default function HRDashboard() {
               </Table.Tr>
             ))}
           </Table.Tbody>
-        </Table>
+        </Table></Box>
       </Card>
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
